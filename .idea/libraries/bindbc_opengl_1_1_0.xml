@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bindbc-opengl-1.1.0" type="DLangLib">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.dub/packages/bindbc-opengl/1.1.0/bindbc-opengl/source" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

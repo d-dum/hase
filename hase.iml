@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="DLANGUAGE_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bindbc-opengl-1.1.0" level="project" />
+    <orderEntry type="library" name="bindbc-loader-1.1.3" level="project" />
+    <orderEntry type="library" name="dsdl2-0.2.0-beta" level="project" />
+    <orderEntry type="library" name="bindbc-sdl-1.4.4" level="project" />
+    <orderEntry type="library" name="bindbc-common-0.1.2" level="project" />
+  </component>
+</module>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dsdl2-0.2.0-beta" type="DLangLib">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.dub/packages/dsdl2/0.2.0-beta/dsdl2/source" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

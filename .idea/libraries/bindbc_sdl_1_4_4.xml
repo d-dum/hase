@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bindbc-sdl-1.4.4" type="DLangLib">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.dub/packages/bindbc-sdl/1.4.4/bindbc-sdl/source" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
