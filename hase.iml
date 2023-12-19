@@ -9,7 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bindbc-opengl-1.1.0" level="project" />
     <orderEntry type="library" name="bindbc-loader-1.1.3" level="project" />
-    <orderEntry type="library" name="dsdl2-0.2.0-beta" level="project" />
     <orderEntry type="library" name="bindbc-sdl-1.4.4" level="project" />
     <orderEntry type="library" name="bindbc-common-0.1.2" level="project" />
   </component>
