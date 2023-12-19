@@ -28,6 +28,9 @@ public:
         while(!window.isCloseRequested())
         {
             window.pollEvents();
+
+            callback();
+
             window.update();
         }
     }
