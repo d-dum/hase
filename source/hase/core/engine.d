@@ -35,7 +35,7 @@ public:
         }
     }
 
-    IWindow getWindow()
+    W getWindow()
     {
         return window;
     }
