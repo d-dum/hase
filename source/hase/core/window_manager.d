@@ -13,6 +13,8 @@ interface IWindow
     void update();
 }
 
+alias HaseWindow = Window!(4, 6);
+
 class Window(int openglMajor, int openglMinor) : IWindow
 {
 private:
