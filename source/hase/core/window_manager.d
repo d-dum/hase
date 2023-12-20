@@ -17,6 +17,9 @@ alias HaseWindow = Window!(4, 6);
 
 class Window(int openglMajor, int openglMinor) : IWindow
 {
+    static assert(openglMajor >= 3 && openglMajor <= 4, "OpenGL major version must be >= 3 and <= 4");
+    static assert(openglMinor <= 6 && openglMinor >= 0, "OpenGL minor version must be <= 6 and >= 0");
+
 private:
     int width, height;
     SDL_Window* window;
@@ -25,6 +28,8 @@ private:
 
 public:
     this(int width, int height, string name){
+
+
         immutable SDLSupport ret = loadSDL();
 
         if(ret != sdlSupport)
