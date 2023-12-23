@@ -14,8 +14,11 @@ private:
 
     void checkErrors(GLuint shaderId)
     {
+        import std.stdio : writeln;
+
         GLint compiled;
         glGetShaderiv(shaderId, GL_COMPILE_STATUS, &compiled);
+        writeln(compiled);
         if(!compiled)
         {
             import std.conv : to;
