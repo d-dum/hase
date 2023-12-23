@@ -1,6 +1,7 @@
 module hase.core.shader_program;
 
 import bindbc.opengl;
+import hase.core.shader;
 
 interface IShaderProgram
 {
@@ -15,11 +16,36 @@ private:
     GLuint programId;
     GLuint[string] locations;
 
+    void checkErrors()
+    {
+        GLint linked = 0;
+        glGetProgramiv(programId, GL_LINK_STATUS, &linked);
+        if(!linked)
+        {
+            import std.conv : to;
+
+            int infoLogLength = 0;
+            glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+            char[] log = new char[infoLogLength];
+
+            throw new Exception(to!string(log));
+        }
+    }
+
 public:
 
-    this(GLuint programId)
+    this(IShader[] shaders)
     {
-        this.programId = programId;
+        programId = glCreateProgram();
+
+        foreach(IShader shader; shaders)
+        {
+            glAttachShader(programId, shader.getShaderId());
+        }
+
+        glLinkProgram(programId);
+
+        checkErrors();
     }
 
     GLuint getProgramId()
@@ -29,8 +55,10 @@ public:
 
     GLuint getAttribLocation(string name)
     {
-        if(name !in locations)
-        {}
+        if(name in locations)
+        {
+            return locations[name];
+        }
         
 
         immutable GLuint loc = glGetAttribLocation(this.programId, cast(const(char*)) name.ptr);
@@ -41,5 +69,10 @@ public:
         }
 
         return cast(GLuint) loc;
+    }
+
+    ~this()
+    {
+        glDeleteProgram(programId);
     }
 }
