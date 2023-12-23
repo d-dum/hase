@@ -7,6 +7,8 @@ interface IShaderProgram
 {
     GLuint getProgramId();
     GLuint getAttribLocation(string name);
+    void start();
+    void stop();
 }
 
 class ShaderProgram : IShaderProgram
@@ -70,6 +72,17 @@ public:
 
         return cast(GLuint) loc;
     }
+
+    void start()
+    {
+        glUseProgram(programId);
+    }
+
+    void stop()
+    {
+        glUseProgram(0);
+    }
+
 
     ~this()
     {
