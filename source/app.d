@@ -12,6 +12,8 @@ void main()
 
 	ShaderProgram program = new ShaderProgram([vert, frag]);
 
+	Mesh quad = new Mesh(new Quad);
+
 	engine.engineLoop(() {
 		program.start();
 

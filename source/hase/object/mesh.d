@@ -2,6 +2,8 @@ module hase.object.mesh;
 
 import bindbc.opengl;
 
+import hase.object.primitive;
+
 interface IMesh
 {
     GLuint getVbo();
@@ -37,8 +39,15 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         glBindVertexArray(0);
+
+        dataSize = cast(int) indices.length;
     }
 
+    this(IPrimitive primitive)
+    {
+        PrimitiveData data = primitive.getData();
+        this(data.positions, data.indices);
+    }
 
     GLuint getVao()
     {
