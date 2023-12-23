@@ -13,6 +13,8 @@ void main()
 	ShaderProgram program = new ShaderProgram([vert, frag]);
 
 	engine.engineLoop(() {
+		program.start();
 
+		program.stop();
 	});
 }

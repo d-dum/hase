@@ -7,7 +7,7 @@ import std.conv : to;
 
 interface IEngine
 {
-    void engineLoop(void function() callback);
+    void engineLoop(void delegate() callback);
     IWindow getWindow();
 }
 
@@ -42,7 +42,7 @@ public:
 
     }
 
-    void engineLoop(void function() callback)
+    void engineLoop(void delegate() callback)
     {
         while(!window.isCloseRequested())
         {
