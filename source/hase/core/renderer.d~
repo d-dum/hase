@@ -1,0 +1,23 @@
+module hase.core.renderer;
+
+import hase.core.shader_program;
+import hase.object.mesh;
+
+class Renderer
+{
+private:
+  
+
+
+public:
+  this()
+  {
+	
+  }
+
+
+  void render(IMesh mesh)
+  {
+
+  }
+}
