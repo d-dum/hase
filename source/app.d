@@ -11,13 +11,11 @@ void main()
 
 	ShaderProgram program = new ShaderProgram([vert, frag]);
 
+	engine.addProgram(program, "mainProgram", true);
+	
 	Mesh quad = new Mesh(new Quad);
-
-	Renderer renderer = new Renderer();
 	
 	engine.engineLoop(() {
-		program.start();
-		renderer.render(quad);
-		program.stop();
+		engine.renderObject(quad);
 	});
 }
