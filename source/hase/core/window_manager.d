@@ -28,11 +28,12 @@ private:
 public:
 	this(int width, int height, string name)
 	{
-	  import std.stdio : writeln;
+		import std.stdio : writeln;
+
 		immutable SDLSupport ret = loadSDL();
 		SDL_version version_;
 		loadSDLImage();
-	    
+
 		if (ret != sdlSupport)
 		{
 			if (ret == SDLSupport.noLibrary)
@@ -65,7 +66,7 @@ public:
 		{
 			throw new Exception("Failed to create opengl context");
 		}
-		
+
 	}
 
 	int[2] getDimensions()
@@ -102,7 +103,7 @@ public:
 
 	~this()
 	{
-	  IMG_Quit();
+		IMG_Quit();
 		SDL_GL_DeleteContext(context);
 		SDL_DestroyWindow(window);
 		SDL_Quit();
