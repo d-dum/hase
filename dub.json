@@ -11,6 +11,7 @@
 	"name": "hase",
 	"versions": [
 		"SDL_2022",
-		"GL_46"
+		"GL_46",
+		"SDL_Image_2_6"
 	]
 }
