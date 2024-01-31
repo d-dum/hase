@@ -33,14 +33,6 @@ public:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.getEbo());
 		glBindBuffer(GL_ARRAY_BUFFER, mesh.getVbo());
 
-		glVertexAttribPointer(
-			0,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			null);
-
 		glDrawElements(GL_TRIANGLES, mesh.getDataSize(), GL_UNSIGNED_INT, null);
 
 		glDisableVertexAttribArray(0);
