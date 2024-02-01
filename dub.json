@@ -4,7 +4,8 @@
 	],
 	"dependencies": {
 		"bindbc-opengl": "~>1.1.0",
-		"bindbc-sdl": "~>1.4.4"
+		"bindbc-sdl": "~>1.4.4",
+		"inmath": "~>1.0.5"
 	},
 	"description": "D sdl2+opengl renderer",
 	"license": "Apache-2.0",

@@ -12,7 +12,8 @@ public
     // object
     import hase.object.mesh;
     import hase.object.primitive;
-
+	import hase.object.movable;
+	import hase.object.camera;
 
     import bindbc.opengl;
     import bindbc.sdl;

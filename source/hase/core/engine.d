@@ -47,7 +47,7 @@ public:
 		}
 		assert(ret == mixin(genGLVersion!(openglMajor, openglMinor)), "Failed to create context of correct version");
 
-		mainRenderer = new R();
+		mainRenderer = new R(45.0, height, width, 0.1, 100.0);
 	}
 
 	void addProgram(IShaderProgram program, string name, bool main = false)

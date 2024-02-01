@@ -31,7 +31,6 @@ public:
 		import std.stdio : writeln;
 
 		immutable SDLSupport ret = loadSDL();
-		SDL_version version_;
 		loadSDLImage();
 
 		if (ret != sdlSupport)

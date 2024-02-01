@@ -3,89 +3,125 @@ module hase.core.shader_program;
 import bindbc.opengl;
 import hase.core.shader;
 
+import inmath;
+
+import std.typecons : Nullable;
+
 interface IShaderProgram
 {
-    GLuint getProgramId();
-    GLuint getAttribLocation(string name);
-    void start();
-    void stop();
+	GLuint getProgramId();
+	Nullable!Attribute getAttribLocation(string name);
+	Nullable!Uniform getUniformLocation(string name);
+	void start();
+	void stop();
+}
+
+struct Uniform
+{
+	GLuint location;
+
+	void load(mat4 matrix)
+	{
+		glUniformMatrix4fv(location, 1, GL_TRUE, matrix.ptr);
+	}
+}
+
+struct Attribute
+{
+	GLuint location;
 }
 
 class ShaderProgram : IShaderProgram
 {
 private:
 
-    GLuint programId;
-    GLuint[string] locations;
+	GLuint programId;
+	GLuint[string] attrLocations;
+	GLuint[string] uniformLocations;
 
-    void checkErrors()
-    {
-        GLint linked = 0;
-        glGetProgramiv(programId, GL_LINK_STATUS, &linked);
-        if(!linked)
-        {
-            import std.conv : to;
+	void checkErrors()
+	{
+		GLint linked = 0;
+		glGetProgramiv(programId, GL_LINK_STATUS, &linked);
+		if (!linked)
+		{
+			import std.conv : to;
 
-            int infoLogLength = 0;
-            glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &infoLogLength);
-            char[] log = new char[infoLogLength];
+			int infoLogLength = 0;
+			glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+			char[] log = new char[infoLogLength];
 
-            throw new Exception(to!string(log));
-        }
-    }
+			throw new Exception(to!string(log));
+		}
+	}
 
 public:
 
-    this(IShader[] shaders)
-    {
-        programId = glCreateProgram();
+	this(IShader[] shaders)
+	{
+		programId = glCreateProgram();
 
-        foreach(IShader shader; shaders)
-        {
-            glAttachShader(programId, shader.getShaderId());
-        }
+		foreach (IShader shader; shaders)
+		{
+			glAttachShader(programId, shader.getShaderId());
+		}
 
-        glLinkProgram(programId);
+		glLinkProgram(programId);
 
-        checkErrors();
-    }
+		checkErrors();
+	}
 
-    GLuint getProgramId()
-    {
-        return programId;
-    }
+	GLuint getProgramId()
+	{
+		return programId;
+	}
 
-    GLuint getAttribLocation(string name)
-    {
-        if(name in locations)
-        {
-            return locations[name];
-        }
-        
+	Nullable!Attribute getAttribLocation(string name)
+	{
+		if (name in attrLocations)
+		{
+			return Nullable!Attribute(Attribute(attrLocations[name]));
+		}
 
-        immutable GLuint loc = glGetAttribLocation(this.programId, cast(const(char*)) name.ptr);
+		immutable GLuint loc = glGetAttribLocation(this.programId, cast(const(char*)) name.ptr);
 
-        if(loc == 0)
-        {
-            throw new Exception("Attribute not found");
-        }
+		if (loc == 0)
+		{
+			return Nullable!Attribute();
+		}
 
-        return cast(GLuint) loc;
-    }
+		return Nullable!Attribute(Attribute(cast(GLuint) loc));
+	}
 
-    void start()
-    {
-        glUseProgram(programId);
-    }
+	Nullable!Uniform getUniformLocation(string name)
+	{
+		if (name in uniformLocations)
+		{
+			return Nullable!Uniform(Uniform(uniformLocations[name]));
+		}
 
-    void stop()
-    {
-        glUseProgram(0);
-    }
+		immutable GLuint loc = glGetUniformLocation(this.programId, cast(const(char*)) name.ptr);
 
+		if (loc == 0)
+		{
+			return Nullable!Uniform();
+		}
 
-    ~this()
-    {
-        glDeleteProgram(programId);
-    }
+		return Nullable!Uniform(Uniform(cast(GLuint) loc));
+	}
+
+	void start()
+	{
+		glUseProgram(programId);
+	}
+
+	void stop()
+	{
+		glUseProgram(0);
+	}
+
+	~this()
+	{
+		glDeleteProgram(programId);
+	}
 }

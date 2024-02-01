@@ -14,6 +14,8 @@ void main()
 	engine.addProgram(program, "mainProgram", true);
 	
 	Mesh quad = new Mesh(new Quad);
+
+	Movable!Mesh movableQuad = new Movable!Mesh(quad);
 	
 	engine.engineLoop(() {
 		engine.renderObject(quad);

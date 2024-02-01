@@ -5,20 +5,29 @@ import bindbc.opengl;
 import hase.core.shader_program;
 import hase.object.mesh;
 
+import inmath;
+
 interface IRenderer
 {
 	void render(IMesh mesh);
 	void prepare();
+	mat4 getProjection();
 }
 
 class Renderer : IRenderer
 {
 private:
+	mat4 projection;
 
 public:
-	this()
+	this(float fov, float height, float width, float near, float far)
 	{
+		projection = mat4.perspective(width, height, fov, near, far);
+	}
 
+	mat4 getProjection()
+	{
+		return projection;
 	}
 
 	void prepare()
