@@ -34,7 +34,7 @@ struct Attribute
 class ShaderProgram : IShaderProgram
 {
 private:
-
+	IShader[] shaders;
 	GLuint programId;
 	GLint[string] attrLocations;
 	GLint[string] uniformLocations;
@@ -69,6 +69,8 @@ public:
 		glLinkProgram(programId);
 
 		checkErrors();
+
+		this.shaders = shaders;
 	}
 
 	GLuint getProgramId()

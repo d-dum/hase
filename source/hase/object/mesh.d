@@ -6,36 +6,36 @@ import hase.object.primitive;
 
 interface IMesh
 {
-    GLuint getVbo();
-    GLuint getVao();
-    GLuint getEbo();
-    GLsizei getDataSize();
+	GLuint getVbo();
+	GLuint getVao();
+	GLuint getEbo();
+	GLsizei getDataSize();
 }
 
 class Mesh : IMesh
 {
 private:
 
-    GLuint vao, vbo, ebo;
-    GLsizei dataSize;
+	GLuint vao, vbo, ebo;
+	GLsizei dataSize;
 
 public:
 
-    this(float[] positions, uint[] indices)
-    {
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
+	this(float[] positions, uint[] indices)
+	{
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
 
-        glGenBuffers(1, &vbo);
-        glGenBuffers(1, &ebo);
+		glGenBuffers(1, &vbo);
+		glGenBuffers(1, &ebo);
 
 		glEnableVertexAttribArray(0);
-		
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.length * uint.sizeof, indices.ptr, GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, positions.length * positions.sizeof, positions.ptr, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.length * uint.sizeof, indices.ptr, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, positions.length * positions.sizeof, positions.ptr, GL_STATIC_DRAW);
 
 		glVertexAttribPointer(
 			0,
@@ -45,37 +45,45 @@ public:
 			0,
 			null);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableVertexAttribArray(0);
-        glBindVertexArray(0);
+		glBindVertexArray(0);
 
-        dataSize = cast(int) indices.length;
-    }
+		dataSize = cast(int) indices.length;
+	}
 
-    this(IPrimitive primitive)
-    {
-        PrimitiveData data = primitive.getData();
-        this(data.positions, data.indices);
-    }
+	this(IPrimitive primitive)
+	{
+		PrimitiveData data = primitive.getData();
+		this(data.positions, data.indices);
+	}
 
-    GLuint getVao()
-    {
-        return vao;
-    }
+	GLuint getVao()
+	{
+		return vao;
+	}
 
-    GLuint getVbo()
-    {
-        return vbo;
-    }
+	GLuint getVbo()
+	{
+		return vbo;
+	}
 
-    GLuint getEbo()
-    {
-        return ebo;
-    }
+	GLuint getEbo()
+	{
+		return ebo;
+	}
 
-    GLsizei getDataSize()
-    {
-        return dataSize;
-    }
+	GLsizei getDataSize()
+	{
+		return dataSize;
+	}
+
+	~this()
+	{
+		glDeleteVertexArrays(1, &vao);
+
+		glDeleteBuffers(1, &vbo);
+		glDeleteBuffers(1, &ebo);
+	}
 }
