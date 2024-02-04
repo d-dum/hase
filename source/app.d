@@ -12,12 +12,12 @@ void main()
 	ShaderProgram program = new ShaderProgram([vert, frag]);
 
 	engine.addProgram(program, "mainProgram", true);
-	
+
 	Mesh quad = new Mesh(new Quad);
 
-	Movable!Mesh movableQuad = new Movable!Mesh(quad);
+	Movable!IMesh movableQuad = new Movable!IMesh(quad);
+	engine.addCamera(new Camera(vec3(0, 0, -4), vec3(0, 0, 0)), "mainCamera", true);
 	
-	engine.engineLoop(() {
-		engine.renderObject(quad);
-	});
+	
+	engine.engineLoop(() { engine.renderMovable(movableQuad); });
 }

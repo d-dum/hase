@@ -17,4 +17,6 @@ public
 
     import bindbc.opengl;
     import bindbc.sdl;
+
+	import inmath;
 }

@@ -18,7 +18,7 @@ interface IShaderProgram
 
 struct Uniform
 {
-	GLuint location;
+	GLint location;
 
 	void load(mat4 matrix)
 	{
@@ -36,8 +36,8 @@ class ShaderProgram : IShaderProgram
 private:
 
 	GLuint programId;
-	GLuint[string] attrLocations;
-	GLuint[string] uniformLocations;
+	GLint[string] attrLocations;
+	GLint[string] uniformLocations;
 
 	void checkErrors()
 	{
@@ -83,9 +83,9 @@ public:
 			return Nullable!Attribute(Attribute(attrLocations[name]));
 		}
 
-		immutable GLuint loc = glGetAttribLocation(this.programId, cast(const(char*)) name.ptr);
+		immutable GLint loc = glGetAttribLocation(this.programId, cast(const(char*)) name.ptr);
 
-		if (loc == 0)
+		if (loc == -1)
 		{
 			return Nullable!Attribute();
 		}
@@ -100,9 +100,9 @@ public:
 			return Nullable!Uniform(Uniform(uniformLocations[name]));
 		}
 
-		immutable GLuint loc = glGetUniformLocation(this.programId, cast(const(char*)) name.ptr);
+		immutable GLint loc = glGetUniformLocation(this.programId, cast(const(char*)) name.ptr);
 
-		if (loc == 0)
+		if (loc == -1)
 		{
 			return Nullable!Uniform();
 		}

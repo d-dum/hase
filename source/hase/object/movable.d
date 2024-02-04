@@ -24,6 +24,8 @@ public:
 		model = model.rotateX(rotation.x);
 		model = model.rotateY(rotation.y);
 		model = model.rotateZ(rotation.z);
+
+		this.obj = obj;
 	}
 
 	T getObject()
