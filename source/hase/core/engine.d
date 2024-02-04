@@ -18,6 +18,11 @@ interface IEngine
 {
 	void engineLoop(void delegate() callback);
 	IWindow getWindow();
+	IShaderProgram prepareRenderer(Nullable!string program_name = Nullable!string());
+	void renderMovable(IMovable!IMesh movable, Nullable!string programName = Nullable!string());
+	void renderObject(IMesh mesh);
+	void addCamera(ICamera camera, string name, bool main = false);
+	void addProgram(IShaderProgram program, string name, bool main = false);
 }
 
 alias Hase = Engine!(HaseWindow, Renderer, 4, 6);
