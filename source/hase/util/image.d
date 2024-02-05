@@ -7,7 +7,10 @@ import std.stdint : uint8_t, uint16_t;
 
 interface IImage
 {
-  
+	bool isLoaded();
+	Nullable!(void*) getPixels();
+	Nullable!PixelFormat getPixelFormat();
+	Nullable!ImageDimensions getDimensions();
 }
 
 struct ImageDimensions

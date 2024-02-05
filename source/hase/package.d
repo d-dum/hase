@@ -8,7 +8,8 @@ public
 	import hase.core.shader;
 	import hase.core.shader_program;
 	import hase.core.renderer;
-
+	import hase.core.texture;
+	
 	// object
 	import hase.object.mesh;
 	import hase.object.primitive;

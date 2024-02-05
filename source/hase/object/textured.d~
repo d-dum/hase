@@ -1,0 +1,3 @@
+module hase.object.textured;
+
+import hase.core.texture : ITexture;
