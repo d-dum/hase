@@ -289,7 +289,7 @@ public:
 		{
 			debug
 			{
-				throw new Exception("Failed to get texture sampler location");
+			  throw new Exception("Failed to get texture sampler location: " ~ textured.getTexture().getUniformName());
 			}
 			return;
 		}

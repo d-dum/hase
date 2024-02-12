@@ -33,20 +33,35 @@ public:
 	void prepare()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		debug
+		{
+			glClearColor(1, 0, 0, 1);
+		}
 	}
 
 	void render(IMesh mesh)
 	{
-	  GlBuffer positions = mesh.getPositions();
-	  
+		GlBuffer positions = mesh.getPositions();
+
 		glBindVertexArray(mesh.getVao());
 		glEnableVertexAttribArray(0);
 
 		positions.bind();
-		
+
+		if (mesh.hasUv())
+		{
+			glEnableVertexAttribArray(1);
+			mesh.getUvs().bind();
+		}
+
 		glDrawElements(GL_TRIANGLES, mesh.getDataSize(), GL_UNSIGNED_INT, null);
 
 		glDisableVertexAttribArray(0);
+		if (mesh.hasUv())
+		{
+			glDisableVertexAttribArray(1);
+			mesh.getUvs().unbind();
+		}
 		positions.unbind();
 		glBindVertexArray(0);
 	}
