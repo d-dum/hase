@@ -15,6 +15,7 @@ public
 	import hase.object.primitive;
 	import hase.object.movable;
 	import hase.object.camera;
+	import hase.object.textured;
 
 	// util
 	import hase.util.image;

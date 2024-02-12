@@ -183,8 +183,8 @@ public:
 		return program;
 	}
 
-	void render(O)(IMovable!O movable, Nullable!string programName = Nullable!string(),
-		Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram())
+	void render(O)(IMovable!O movable, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
+		Nullable!string programName = Nullable!string())
 	{
 
 		IShaderProgram program = prepareRenderer(programName, shaderProgram);
@@ -227,21 +227,19 @@ public:
 		return Nullable!IShaderProgram(programs[name]);
 	}
 
-	Nullable!IMesh getRenderableObject(O)(IGeneralObject!O obj)
+  Nullable!IMesh getRenderableObject(O)(O obj)
 	{
-		IGeneralObject object = obj;
-
-		while (!cast(IMesh) object.getObject() && cast(IGeneralObject) object)
+		if (cast(IMesh) obj.getObject())
 		{
-			object = obj.getObject();
+			return Nullable!IMesh(obj.getObject());
 		}
-
-		if (cast(IMesh) object.getObject())
+		else if (obj.getObject)
 		{
-			return Nullable!IMesh(object.getObject());
+			return getRenderableObject(obj);
 		}
 
 		return Nullable!IMesh();
+
 	}
 
 	void render(O)(ITextured!O textured, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
@@ -268,8 +266,8 @@ public:
 			return;
 		}
 
-		Nullable!IMesh renderableObject = getRenderableObject(textured);
-
+		Nullable!IMesh renderableObject = getRenderableObject(textured.getObject());
+		
 		if (renderableObject.isNull())
 		{
 			debug

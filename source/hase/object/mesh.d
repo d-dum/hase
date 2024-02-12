@@ -2,7 +2,7 @@ module hase.object.mesh;
 
 import bindbc.opengl;
 
-import hase.object.primitive;
+import hase.object.primitive : IPrimitive, PrimitiveData;
 
 import std.typecons : Nullable;
 
