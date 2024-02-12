@@ -3,7 +3,7 @@ module hase.core.renderer;
 import bindbc.opengl;
 
 import hase.core.shader_program;
-import hase.object.mesh;
+import hase.object.mesh : IMesh, GlBuffer;
 
 import inmath;
 
@@ -37,16 +37,17 @@ public:
 
 	void render(IMesh mesh)
 	{
+	  GlBuffer positions = mesh.getPositions();
+	  
 		glBindVertexArray(mesh.getVao());
 		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.getEbo());
-		glBindBuffer(GL_ARRAY_BUFFER, mesh.getVbo());
 
+		positions.bind();
+		
 		glDrawElements(GL_TRIANGLES, mesh.getDataSize(), GL_UNSIGNED_INT, null);
 
 		glDisableVertexAttribArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		positions.unbind();
 		glBindVertexArray(0);
 	}
 }

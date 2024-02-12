@@ -11,6 +11,8 @@ void main()
 
 	ShaderProgram program = new ShaderProgram([vert, frag]);
 
+	Texture texture = new Texture(new Image("res/textures/hampurga.png"));
+	
 	engine.addProgram(program, "mainProgram", true);
 
 	Mesh quad = new Mesh(new Quad);

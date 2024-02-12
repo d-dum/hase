@@ -69,6 +69,8 @@ public:
 
 		width = imageSurface.w;
 		height = imageSurface.h;
+
+		loadedCorrectly = true;
 	}
 
 	bool isLoaded()
