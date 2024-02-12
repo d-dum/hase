@@ -1,5 +1,7 @@
 module hase.object.movable;
 
+import hase.object.general_object : IGeneralObject;
+
 import inmath;
 
 interface IMovable(T)
@@ -8,7 +10,7 @@ interface IMovable(T)
 	mat4 getModel();
 }
 
-class Movable(T) : IMovable!T
+class Movable(T) : IMovable!T, IGeneralObject!T
 {
 private:
 	T obj;

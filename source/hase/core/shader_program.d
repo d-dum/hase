@@ -24,6 +24,11 @@ struct Uniform
 	{
 		glUniformMatrix4fv(location, 1, GL_TRUE, matrix.ptr);
 	}
+
+	void load(int num)
+	{
+		glUniform1i(location, num);
+	}
 }
 
 struct Attribute

@@ -19,5 +19,5 @@ void main()
 	engine.addCamera(new Camera(vec3(0, 0, -4), vec3(0, 0, 0)), "mainCamera", true);
 	
 	
-	engine.engineLoop(() { engine.renderMovable(movableQuad); });
+	engine.engineLoop(() { engine.render(movableQuad); });
 }

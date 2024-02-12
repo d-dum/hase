@@ -8,6 +8,8 @@ import hase.core.renderer : IRenderer, Renderer;
 import hase.object.camera : ICamera;
 import hase.object.movable : IMovable;
 import hase.object.mesh : IMesh;
+import hase.object.textured : ITextured;
+import hase.object.general_object : IGeneralObject;
 
 import bindbc.opengl;
 
@@ -18,14 +20,21 @@ interface IEngine
 {
 	void engineLoop(void delegate() callback);
 	IWindow getWindow();
-	IShaderProgram prepareRenderer(Nullable!string program_name = Nullable!string());
-	void renderMovable(IMovable!IMesh movable, Nullable!string programName = Nullable!string());
-	void renderObject(IMesh mesh);
+	IShaderProgram prepareRenderer(Nullable!string program_name = Nullable!string(),
+		Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram());
+	void render(O)(IMovable!O movable, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
+		Nullable!string programName = Nullable!string());
+	void render(IMesh mesh, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
+		Nullable!string programName = Nullable!string());
+	void render(O)(ITextured!O textured, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
+		Nullable!string programName = Nullable!string());
 	void addCamera(ICamera camera, string name, bool main = false);
 	void addProgram(IShaderProgram program, string name, bool main = false);
 }
 
 alias Hase = Engine!(HaseWindow, Renderer, 4, 6);
+
+GLenum[] textureIndex = [GL_TEXTURE0];
 
 template genGLVersion(int openglMajor, int openglMinor)
 {
@@ -41,7 +50,7 @@ class Engine(W : IWindow, R:
 private:
 	W window;
 
-	IShaderProgram mainProgram;
+	IShaderProgram mainProgram = null;
 	IShaderProgram[string] programs;
 
 	IRenderer mainRenderer;
@@ -96,20 +105,40 @@ public:
 		}
 	}
 
-	void renderObject(IMesh mesh)
+	void render(IMesh mesh, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
+		Nullable!string programName = Nullable!string())
 	{
+		IShaderProgram program = mainProgram;
+		if (!programName.isNull())
+		{
+			Nullable!IShaderProgram prg = getProgram(programName);
+			if (!prg.isNull())
+			{
+				program = prg.get();
+			}
+		}
+		else if (!shaderProgram.isNull())
+		{
+			program = shaderProgram.get();
+		}
+
 		mainRenderer.prepare();
-		mainProgram.start();
+		program.start();
 
 		mainRenderer.render(mesh);
 
-		mainProgram.stop();
+		program.stop();
 	}
 
-	IShaderProgram prepareRenderer(Nullable!string program_name = Nullable!string())
+	IShaderProgram prepareRenderer(Nullable!string program_name = Nullable!string(),
+		Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram())
 	{
 		IShaderProgram program;
-		if (program_name.isNull())
+		if (!shaderProgram.isNull())
+		{
+			program = shaderProgram.get();
+		}
+		else if (program_name.isNull())
 		{
 			program = mainProgram;
 		}
@@ -154,9 +183,11 @@ public:
 		return program;
 	}
 
-	void renderMovable(IMovable!IMesh movable, Nullable!string programName = Nullable!string())
+	void render(O)(IMovable!O movable, Nullable!string programName = Nullable!string(),
+		Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram())
 	{
-		IShaderProgram program = prepareRenderer(programName);
+
+		IShaderProgram program = prepareRenderer(programName, shaderProgram);
 
 		program.start();
 
@@ -173,7 +204,107 @@ public:
 
 		program.stop();
 
-		renderObject(movable.getObject());
+		render(movable.getObject(), Nullable!IShaderProgram(program));
+	}
+
+	Nullable!IShaderProgram getProgram(Nullable!string programName = Nullable!string())
+	{
+		if (programName.isNull())
+		{
+			if (mainProgram is null)
+			{
+				return Nullable!IShaderProgram();
+			}
+			return Nullable!IShaderProgram(mainProgram);
+		}
+
+		string name = programName.get();
+		if ((name in programs) is null)
+		{
+			return Nullable!IShaderProgram();
+		}
+
+		return Nullable!IShaderProgram(programs[name]);
+	}
+
+	Nullable!IMesh getRenderableObject(O)(IGeneralObject!O obj)
+	{
+		IGeneralObject object = obj;
+
+		while (!cast(IMesh) object.getObject() && cast(IGeneralObject) object)
+		{
+			object = obj.getObject();
+		}
+
+		if (cast(IMesh) object.getObject())
+		{
+			return Nullable!IMesh(object.getObject());
+		}
+
+		return Nullable!IMesh();
+	}
+
+	void render(O)(ITextured!O textured, Nullable!IShaderProgram shaderProgram = Nullable!IShaderProgram(),
+		Nullable!string programName = Nullable!string(),
+	)
+	{
+		Nullable!IShaderProgram program = shaderProgram.isNull() ? getProgram(programName)
+			: shaderProgram;
+		if (program.isNull())
+		{
+			debug
+			{
+				throw new Exception("program not found");
+			}
+			return;
+		}
+
+		if (!textured.getTexture().isLoaded())
+		{
+			debug
+			{
+				throw new Exception("texture failed to load");
+			}
+			return;
+		}
+
+		Nullable!IMesh renderableObject = getRenderableObject(textured);
+
+		if (renderableObject.isNull())
+		{
+			debug
+			{
+				throw new Exception("nothing to render");
+			}
+			return;
+		}
+
+		IMesh mesh = renderableObject.get();
+		glBindVertexArray(mesh.getVao());
+
+		program.get().start();
+
+		Nullable!Uniform textureSampler = program.get()
+			.getUniformLocation(textured.getTexture().getUniformName());
+
+		if (textureSampler.isNull())
+		{
+			debug
+			{
+				throw new Exception("Failed to get texture sampler location");
+			}
+			return;
+		}
+
+		glBindVertexArray(mesh.getVao());
+
+		glActiveTexture(textureIndex[textured.getTexture().getTextureIndex()]);
+
+		textureSampler.get().load(textured.getTexture().getTextureIndex());
+		program.get().stop();
+
+		render(textured.getObject(),
+			program);
 	}
 
 	W getWindow()

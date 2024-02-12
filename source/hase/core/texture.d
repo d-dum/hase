@@ -10,6 +10,8 @@ interface ITexture
 {
 	bool isLoaded();
 	GLuint getTextureID();
+	string getUniformName();
+	int getTextureIndex();
 }
 
 class Texture : ITexture
@@ -18,10 +20,15 @@ private:
 	GLuint textureID;
 
 	bool isLoadedCorrectly = false;
+
+	string uniformName;
+	int textureIndex;
 public:
 
-	this(IImage image)
+	this(IImage image, string uniformName = "haseSampler", int textureIndex = 0)
 	{
+		this.textureIndex = textureIndex;
+		this.uniformName = uniformName;
 		if (!image.isLoaded())
 		{
 			debug
@@ -77,6 +84,16 @@ public:
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		isLoadedCorrectly = true;
+	}
+
+	int getTextureIndex()
+	{
+		return textureIndex;
+	}
+
+	string getUniformName()
+	{
+		return uniformName;
 	}
 
 	bool isLoaded()
