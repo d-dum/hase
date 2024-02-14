@@ -282,6 +282,10 @@ public:
 
 		program.get().start();
 
+		
+		glBindVertexArray(mesh.getVao());
+
+		
 		Nullable!Uniform textureSampler = program.get()
 			.getUniformLocation(textured.getTexture().getUniformName());
 
@@ -294,10 +298,8 @@ public:
 			return;
 		}
 
-		glBindVertexArray(mesh.getVao());
-
 		glActiveTexture(textureIndex[textured.getTexture().getTextureIndex()]);
-
+		glBindTexture(GL_TEXTURE_2D, textured.getTexture().getTextureID());
 		textureSampler.get().load(textured.getTexture().getTextureIndex());
 		program.get().stop();
 
