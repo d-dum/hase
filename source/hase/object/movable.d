@@ -8,6 +8,9 @@ interface IMovable(T)
 {
 	T getObject();
 	mat4 getModel();
+	IMovable!T mul(T : mat4, vec4)(T multiplier);
+	IMovable!T rotate(float angle, vec3 axis);
+	IMovable!T translate(vec3 transform);
 }
 
 class Movable(T) : IMovable!T, IGeneralObject!T
@@ -40,4 +43,21 @@ public:
 		return model;
 	}
 
+	IMovable!T mul(M : mat4, vec4)(M multiplier)
+	{
+		model *= multiplier;
+		return this;
+	}
+
+	IMovable!T translate(vec3 transform)
+	{
+		model *= mat4.translation(transform);
+		return this;
+	}
+
+	IMovable!T rotate(float angle, vec3 axis)
+	{
+		model *= mat4.rotation(angle, axis);
+		return this;
+	}
 }
