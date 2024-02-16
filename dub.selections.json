@@ -7,6 +7,9 @@
 		"bindbc-sdl": "1.4.5",
 		"gl3n": "1.4.1",
 		"inmath": "1.0.5",
-		"silly": "1.1.1"
+		"obj-wavefront": "0.0.5",
+		"silly": "1.1.1",
+		"tinygltf": "1.1.0",
+		"utga": "0.0.2"
 	}
 }

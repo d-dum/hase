@@ -19,6 +19,7 @@ public
 
 	// util
 	import hase.util.image;
+	import hase.util.model_loader;
 
 	import bindbc.opengl;
 	import bindbc.sdl;

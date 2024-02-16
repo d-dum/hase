@@ -16,6 +16,8 @@ interface IMesh
 	bool hasUv();
 
 	GlBuffer getUvs();
+
+	static IMesh fromArrays(float[] positions, uint[] indices, float[] uvs, uint[] uvIndices);
 }
 
 struct GlBuffer
@@ -139,6 +141,11 @@ public:
 	{
 		PrimitiveData data = primitive.getData();
 		this(data.positions, data.indices, data.uv, []);
+	}
+
+	static IMesh fromArrays(float[] positions, uint[] indices, float[] uvs, uint[] uvIndices)
+	{
+		return new Mesh(positions, indices, uvs, uvIndices);
 	}
 
 	GLuint getVao()

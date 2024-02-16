@@ -227,7 +227,7 @@ public:
 		return Nullable!IShaderProgram(programs[name]);
 	}
 
-  Nullable!IMesh getRenderableObject(O)(O obj)
+	Nullable!IMesh getRenderableObject(O)(O obj)
 	{
 		if (cast(IMesh) obj.getObject())
 		{
@@ -267,7 +267,7 @@ public:
 		}
 
 		Nullable!IMesh renderableObject = getRenderableObject(textured.getObject());
-		
+
 		if (renderableObject.isNull())
 		{
 			debug
@@ -282,10 +282,8 @@ public:
 
 		program.get().start();
 
-		
 		glBindVertexArray(mesh.getVao());
 
-		
 		Nullable!Uniform textureSampler = program.get()
 			.getUniformLocation(textured.getTexture().getUniformName());
 
@@ -293,7 +291,8 @@ public:
 		{
 			debug
 			{
-			  throw new Exception("Failed to get texture sampler location: " ~ textured.getTexture().getUniformName());
+				throw new Exception("Failed to get texture sampler location: " ~ textured.getTexture()
+						.getUniformName());
 			}
 			return;
 		}

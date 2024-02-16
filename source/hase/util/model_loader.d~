@@ -1,0 +1,14 @@
+module hase.util.model_loader;
+
+interface IModelLoader
+{
+
+}
+
+class WavefrontLoader : IModelLoader
+{
+private:
+
+public:
+  
+}
